@@ -207,7 +207,7 @@ int getLeafNodeCount(TreeNode<int> *root)
 
 void pre_order(TreeNode<int> *root)
 {
-    if (root == 0)
+    if (root == NULL)
         return;
     cout << root->data << ",";
     for (int i = 0; i < root->children.size(); i++)
@@ -218,7 +218,7 @@ void pre_order(TreeNode<int> *root)
 
 void post_order(TreeNode<int> *root)
 {
-    if (root == 0)
+    if (root == NULL)
         return;
 
     for (int i = 0; i < root->children.size(); i++)
