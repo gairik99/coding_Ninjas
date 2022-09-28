@@ -14,7 +14,7 @@ public:
     }
     ~TreeNode()
     {
-        for (int i = 0; i < root->children().size(); i++)
+        for (int i = 0; i < children.size(); i++)
         {
             delete children[i];
         }
@@ -265,7 +265,7 @@ TreeNode<int> *maxSumNode1(TreeNode<int> *root)
             smallsum += childmax->children[i]->data;
         }
 
-        if (sum <= smallsum) // comparision  update if necessary
+        if (sum < smallsum) // comparision  update if necessary
         {
             ans = childmax;
             sum = smallsum;
@@ -327,7 +327,7 @@ bool areIdentical(TreeNode<int> *root1, TreeNode<int> *root2)
     for (int i = 0; i < root1->children.size(); ++i)
     {
         bool ans = areIdentical(root1->children[i], root2->children[i]);
-        if (ans)
+        if (!ans)
         {
             return false;
         }
@@ -336,26 +336,58 @@ bool areIdentical(TreeNode<int> *root1, TreeNode<int> *root2)
     return true;
 }
 
-int main()
+TreeNode<int> *getNextLargerElement(TreeNode<int> *root, int n)
 {
-    /*TreeNode<int> *root = new TreeNode<int>(1);
-    TreeNode<int> *node1 = new TreeNode<int>(5);
-    TreeNode<int> *node2 = new TreeNode<int>(6);
-    root->children.push_back(node1);
-    root->children.push_back(node2);*/
-    TreeNode<int> *root = takeInputLavel();
-    printTreeLevel(root);
-    cout << endl;
-    // cout << " total number of roots are: " << NumberofRoot(root);
-    // cout << " total sum is: " << SumofRoot(root);
-    // cout << " maximum is: " << maxDataNode(root)->data;
-    // cout << " height is: " << getHeight(root);
-    // cout << "level roots are: " << endl;
-    // printLevelK(root, 2);
-    // pre_order(root);
-    // cout << endl;
-    // post_order(root);
-    // cout << findx(root, 5);
-    // cout << "maximum is: " << maxSumNode(root)->data;
-    delete root;
-}
+    12 if (root == NULL)
+    {
+        return root;
+    }
+
+    TreeNode<int> *nextLarger = NULL;
+    if (root->data > n)
+    {
+        flag = true;
+        nextLarger = root;
+    }
+    for (int i = 0; i < root->children.size(); i++)
+    {
+        TreeNode<int> *temp = getNextLargerElement(root->children[i], n);
+
+        if (nextLarger == NULL)
+        {
+            nextLarger = temp;
+        }
+        else if (temp != NULL && temp->data < nextLarger->data)
+        {
+            nextLarger = temp;
+        }
+        return nextLarger;
+    }
+
+    int main()
+    {
+        /*TreeNode<int> *root = new TreeNode<int>(1);
+        TreeNode<int> *node1 = new TreeNode<int>(5);
+        TreeNode<int> *node2 = new TreeNode<int>(6);
+        root->children.push_back(node1);
+        root->children.push_back(node2);
+        TreeNode<int> *root1 = takeInputLavel();
+        TreeNode<int> *root2 = takeInputLavel();
+        cout << areIdentical(root1, root2);
+        printTreeLevel(root);
+        cout << endl;
+        */
+
+        // cout << " total number of roots are: " << NumberofRoot(root);
+        // cout << " total sum is: " << SumofRoot(root);
+        // cout << " maximum is: " << maxDataNode(root)->data;
+        // cout << " height is: " << getHeight(root);
+        // cout << "level roots are: " << endl;
+        // printLevelK(root, 2);
+        // pre_order(root);
+        // cout << endl;
+        // post_order(root);
+        // cout << findx(root, 5);
+        // cout << "maximum is: " << maxSumNode(root)->data;
+        // delete root1;
+    }
