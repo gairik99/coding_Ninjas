@@ -338,7 +338,7 @@ bool areIdentical(TreeNode<int> *root1, TreeNode<int> *root2)
 
 TreeNode<int> *getNextLargerElement(TreeNode<int> *root, int n)
 {
-    12 if (root == NULL)
+    if (root == NULL)
     {
         return root;
     }
@@ -346,7 +346,6 @@ TreeNode<int> *getNextLargerElement(TreeNode<int> *root, int n)
     TreeNode<int> *nextLarger = NULL;
     if (root->data > n)
     {
-        flag = true;
         nextLarger = root;
     }
     for (int i = 0; i < root->children.size(); i++)
