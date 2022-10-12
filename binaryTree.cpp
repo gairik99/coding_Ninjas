@@ -89,8 +89,10 @@ void printBinaryTree(BinaryTreeNode<int> *root)
     printBinaryTree(root->right);
 }
 
-void printBinaryTreeLevel(BinaryTreeNode<int> *node)
+void printBinaryTreeLevel(BinaryTreeNode<int> *root)
 {
+    if(root==NULL)
+        return;
     queue<BinaryTreeNode<int> *> node;
     node.push(root);
     while (node.size() != 0)
@@ -125,5 +127,6 @@ int main()
     root->right = node2;*/
     // BinaryTreeNode<int> *root = takeInput();
     BinaryTreeNode<int> *root = takeInputLevel();
-    printBinaryTree(root);
+    // printBinaryTree(root);
+    printBinaryTreeLevel(root);
 }
