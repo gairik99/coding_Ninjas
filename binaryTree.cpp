@@ -141,6 +141,79 @@ bool isNodePresent(BinaryTreeNode<int> *root, int x)
     return isNodePresent(root->left, x) || isNodePresent(root->right, x);
 }
 
+int height(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+        return 0;
+    int ans1 = 1, ans2 = 1;
+    ans1 += height(root->left);
+    ans2 += height(root->right);
+    return max(ans1, ans2);
+}
+
+void mirrorBinaryTree(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    mirrorBinaryTree(root->left);
+    mirrorBinaryTree(root->right);
+
+    BinaryTreeNode<int> *templeft = root->left;
+    root->left = root->right;
+    root->right = templeft;
+}
+
+void inOrder(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+        return;
+    inOrder(root->left);
+    cout << root->data << ",";
+    inOrder(root->right);
+}
+
+void preOrder(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    cout << root->data << " ";
+    preOrder(root->left);
+    preOrder(root->right);
+}
+
+BinaryTreeNode<int> *buildFromPre(int in[], int pre[], int inS, int inE, int preS, int preE)
+{
+    if (inS > inE)
+        return NULL;
+    int rootData = pre[preS];
+    int rootIndex = -1;
+    for (int i = inS; i <= inE; i++)
+    {
+        if (in[i] == rootData)
+        {
+            rootIndex = i;
+            break;
+        }
+    }
+
+    int linS = inS;
+    int linE = rootIndex - 1;
+    int lpreS = preS + 1;
+    int lpreE = linE - linS + lpreS;
+    int rpreS = lpreE + 1;
+    int rpreE = preE;
+    int rinS = rootIndex + 1;
+    int rinE = inE;
+    BinaryTreeNode<int> *root = new BinaryTreeNode<int>(rootData);
+    root->left = buildFromPre(in, pre, linS, linE, lpreS, lpreE);
+    root->right = buildFromPre(in, pre, rinS, rinE, rpreS, rpreE);
+    return root;
+}
+
 int main()
 {
     // 1 2 3 4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1
@@ -153,8 +226,16 @@ int main()
     */
     // BinaryTreeNode<int> *root = takeInput();
     BinaryTreeNode<int> *root = takeInputLevel();
+    // int in[] = {4, 2, 5, 1, 8, 6, 9, 3, 7};
+    // int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
+    // BinaryTreeNode<int> *root = buildFromPre(in, pre, 0, 8, 0, 8);
     cout << endl;
     // printBinaryTree(root);
     printBinaryTreeLevel(root);
-    cout << countNodes(root);
+    // cout << countNodes(root);
+    // cout << isNodePresent(root, 8);
+    // cout << height(root);
+    // cout << endl;
+    // inOrder(root);
+    delete root;
 }
