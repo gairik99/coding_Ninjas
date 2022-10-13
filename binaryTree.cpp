@@ -91,7 +91,7 @@ void printBinaryTree(BinaryTreeNode<int> *root)
 
 void printBinaryTreeLevel(BinaryTreeNode<int> *root)
 {
-    if(root==NULL)
+    if (root == NULL)
         return;
     queue<BinaryTreeNode<int> *> node;
     node.push(root);
@@ -118,15 +118,43 @@ void printBinaryTreeLevel(BinaryTreeNode<int> *root)
     }
 }
 
+int countNodes(BinaryTreeNode<int> *root)
+{
+    int ans1 = 0, ans2 = 0;
+    if (root == NULL)
+        return 0;
+    ans1 += countNodes(root->left);
+    ans2 += countNodes(root->right);
+    return (1 + ans1 + ans2);
+}
+
+bool isNodePresent(BinaryTreeNode<int> *root, int x)
+{
+    if (root == NULL)
+    {
+        return false;
+    }
+    else if (root->data == x)
+    {
+        return true;
+    }
+    return isNodePresent(root->left, x) || isNodePresent(root->right, x);
+}
+
 int main()
 {
+    // 1 2 3 4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1
+
     /*BinaryTreeNode<int> *root = new BinaryTreeNode<int>(1);
     BinaryTreeNode<int> *node1 = new BinaryTreeNode<int>(2);
     BinaryTreeNode<int> *node2 = new BinaryTreeNode<int>(3);
     root->left = node1;
-    root->right = node2;*/
+    root->right = node2;
+    */
     // BinaryTreeNode<int> *root = takeInput();
     BinaryTreeNode<int> *root = takeInputLevel();
+    cout << endl;
     // printBinaryTree(root);
     printBinaryTreeLevel(root);
+    cout << countNodes(root);
 }
