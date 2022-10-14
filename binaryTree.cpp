@@ -28,6 +28,7 @@ public:
     int height;
     bool balanced;
 };
+
 BinaryTreeNode<int> *takeInputLevel()
 {
     int data;
@@ -329,6 +330,21 @@ bool isBalanced(BinaryTreeNode<int> *root)
     return isBalancedHelper(root)->balanced;
 }
 
+BinaryTreeNode<int> *removeLeafNodes(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+    {
+        return root;
+    }
+    if (root->left == NULL && root->right == NULL)
+    {
+        return NULL;
+    }
+    root->left = removeLeafNodes(root->left);
+    root->right = removeLeafNodes(root->right);
+    return root;
+}
+
 int main()
 {
     // 1 2 3 4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1
@@ -347,13 +363,14 @@ int main()
     // int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
     // BinaryTreeNode<int> *root = buildFromPre(in, pre, 0, 8, 0, 8);
     cout << endl;
+    BinaryTreeNode<int> *root1 = removeLeafNodes(root);
     // printBinaryTree(root);
     // printBinaryTreeLevel(root);
-    printLevelWise(root);
+    printLevelWise(root1);
     // cout << countNodes(root);
     // cout << isNodePresent(root, 8);
     // cout << height(root);
     // cout << endl;
     // inOrder(root);
-    delete root;
+    delete root1;
 }
