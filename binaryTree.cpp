@@ -343,7 +343,7 @@ int main()
     BinaryTreeNode<int> *root = takeInputLevel();
     // int in[] = {4, 2, 5, 1, 8, 6, 9, 3, 7};
     // int post[] = {4, 5, 2, 8, 9, 6, 7, 3, 1};
-    BinaryTreeNode<int> *root = buildFromPost(in, post, 0, 8, 0, 8);
+    // BinaryTreeNode<int> *root = buildFromPost(in, post, 0, 8, 0, 8);
     // int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
     // BinaryTreeNode<int> *root = buildFromPre(in, pre, 0, 8, 0, 8);
     cout << endl;
