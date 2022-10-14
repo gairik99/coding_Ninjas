@@ -22,6 +22,12 @@ public:
     }
 };
 
+class BalancedReturnType
+{
+public:
+    int height;
+    bool balanced;
+};
 BinaryTreeNode<int> *takeInputLevel()
 {
     int data;
@@ -115,6 +121,38 @@ void printBinaryTreeLevel(BinaryTreeNode<int> *root)
         }
         else
             cout << "R:" << -1 << endl;
+    }
+}
+
+void printLevelWise(BinaryTreeNode<int> *root)
+{
+    queue<BinaryTreeNode<int> *> pendingNodes;
+    pendingNodes.push(root);
+    pendingNodes.push(NULL);
+    while (!pendingNodes.empty())
+    {
+        BinaryTreeNode<int> *frontNode = pendingNodes.front();
+        pendingNodes.pop();
+        if (frontNode == NULL)
+        {
+            cout << "\n";
+            if (!pendingNodes.empty())
+            {
+                pendingNodes.push(NULL);
+            }
+        }
+        else
+        {
+            cout << frontNode->data << " ";
+            if (frontNode->left != NULL)
+            {
+                pendingNodes.push(frontNode->left);
+            }
+            if (frontNode->right != NULL)
+            {
+                pendingNodes.push(frontNode->right);
+            }
+        }
     }
 }
 
@@ -214,6 +252,83 @@ BinaryTreeNode<int> *buildFromPre(int in[], int pre[], int inS, int inE, int pre
     return root;
 }
 
+BinaryTreeNode<int> *buildFromPost(int in[], int post[], int inS, int inE, int postS, int postE)
+{
+    if (inS > inE)
+        return NULL;
+    int rootData = post[postE];
+    int rootIndex = -1;
+    for (int i = inS; i <= inE; i++)
+    {
+        if (in[i] == rootData)
+        {
+            rootIndex = i;
+            break;
+        }
+    }
+
+    int linS = inS;
+    int linE = rootIndex - 1;
+    int lpostS = postS;
+    int lpostE = linE - linS + lpostS;
+    int rpostS = lpostE + 1;
+    int rpostE = postE - 1;
+    int rinS = rootIndex + 1;
+    int rinE = inE;
+    BinaryTreeNode<int> *root = new BinaryTreeNode<int>(rootData);
+    root->left = buildFromPost(in, post, linS, linE, lpostS, lpostE);
+    root->right = buildFromPost(in, post, rinS, rinE, rpostS, rpostE);
+    return root;
+}
+
+int getSum(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+    int leftSum = getSum(root->left);
+    int rightSum = getSum(root->right);
+    return leftSum + rightSum + root->data;
+}
+
+BalancedReturnType *isBalancedHelper(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+    {
+        BalancedReturnType *ans = new BalancedReturnType();
+        ans->height = 0;
+        ans->balanced = true;
+        return ans;
+    }
+    BalancedReturnType *ans1 = isBalancedHelper(root->left);
+    BalancedReturnType *ans2 = isBalancedHelper(root->right);
+    bool flag;
+    if (!(ans1->balanced) || !(ans2->balanced) ||
+        abs(ans1->height - ans2->height) > 1)
+    {
+        flag = false;
+    }
+    else
+    {
+        flag = true;
+    }
+    BalancedReturnType *output = new BalancedReturnType();
+    output->height = max(ans1->height, ans2->height) + 1;
+    output->balanced = flag;
+    return output;
+}
+
+bool isBalanced(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+    {
+        return true;
+    }
+
+    return isBalancedHelper(root)->balanced;
+}
+
 int main()
 {
     // 1 2 3 4 5 6 7 -1 -1 -1 -1 8 9 -1 -1 -1 -1 -1 -1
@@ -227,11 +342,14 @@ int main()
     // BinaryTreeNode<int> *root = takeInput();
     BinaryTreeNode<int> *root = takeInputLevel();
     // int in[] = {4, 2, 5, 1, 8, 6, 9, 3, 7};
+    // int post[] = {4, 5, 2, 8, 9, 6, 7, 3, 1};
+    BinaryTreeNode<int> *root = buildFromPost(in, post, 0, 8, 0, 8);
     // int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
     // BinaryTreeNode<int> *root = buildFromPre(in, pre, 0, 8, 0, 8);
     cout << endl;
     // printBinaryTree(root);
-    printBinaryTreeLevel(root);
+    // printBinaryTreeLevel(root);
+    printLevelWise(root);
     // cout << countNodes(root);
     // cout << isNodePresent(root, 8);
     // cout << height(root);
